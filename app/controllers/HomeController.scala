@@ -1,5 +1,8 @@
 package controllers
 
+import Persistence.DAO.ItemDAO
+import views.html._
+
 import javax.inject._
 import play.api.mvc._
 
@@ -41,6 +44,13 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       Ok("Hello" + user)
     } getOrElse {
       Unauthorized("This is most peculiar...")
+    }
+  }
+
+  val list = Action {implicit request =>
+    val items = ItemDAO.readAll()
+    render{
+      case views.html.index() => Ok(views.html.index(items))
     }
   }
 
